@@ -1,0 +1,42 @@
+import sys
+
+import pygame
+from pygame.locals import QUIT
+
+# 初始化
+pygame.init()
+# 建立 window 視窗畫布，大小為 800x600
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("Consleq's Game")
+# 清除畫面並填滿背景色
+screen.fill((255, 255, 255))
+
+point = 0
+
+button = pygame.draw.rect(screen, (0,213,255), [300,200,200,200], 0)
+
+def drawButton():
+    screen.fill((255, 255, 255))
+    head_font = pygame.font.SysFont(None, 60)
+    text_surface = head_font.render("Point:"+str(point), True, (255, 94, 0))
+    pygame.draw.rect(screen, (0,213,255), [300,200,200,200], 0)
+    screen.blit(text_surface, (10, 10))
+    pygame.display.update()
+
+drawButton()
+
+
+# 事件迴圈監聽事件，進行事件處理
+while True:
+    # 迭代整個事件迴圈，若有符合事件則對應處理
+    for event in pygame.event.get():
+        # 當使用者結束視窗，程式也結束
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            if button.collidepoint(pos):
+                point += 1
+                drawButton()
+                #text_surface = head_font.render(f"Point:{point}", True, (255, 94, 0))
