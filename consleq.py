@@ -17,7 +17,7 @@ lava_position = (200,600)
 lava_image = pygame.image.load(os.path.join("lava.png"))
 lava = pygame.transform.scale(lava_image, (500,300))
 
-def draw_screen():
+def basic_background():
     screen.fill(sky)
     screen.blit(cloud, (100,100))
     screen.blit(stone_platform, stone_platform_position)
