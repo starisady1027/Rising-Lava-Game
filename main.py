@@ -7,7 +7,8 @@ pygame.display.set_caption("Rising Lava")
 
 FPS = 60
 velocity = 5
-gravity = 6
+gravity = 1
+jumpHeight = 20
 white = (255,255,255)
 sky = (51,215,255)
 cloud_image = pygame.image.load(os.path.join("cloud.png"))
@@ -31,26 +32,32 @@ def basic_background(player):
     pygame.display.update()
 
 def playerHandler(keyPressed, player):
-    spacePressed = False
     if keyPressed[pygame.K_a]:
         player.x -= velocity
     if keyPressed[pygame.K_d]:
         player.x += velocity
-    if spacePressed == False:
-        if keyPressed[pygame.K_SPACE]:
-            player.y -= velocity
-            spacePressed = True
+    
 
 
 def main():
     player = pygame.Rect(225, 580, 40, 80)
     clock = pygame.time.Clock()
+    spacePressed = False
+    velocity = 5
     while True:
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
         keyPressed = pygame.key.get_pressed()
-        playerHandler(keyPressed,player)
+        if keyPressed[pygame.K_SPACE]:
+            spacePressed = True
+        if spacePressed:
+            player.y -= velocity
+            velocity -= gravity
+            if velocity < -jumpHeight:
+                spacePressed = False
+                velocity = jumpHeight
+        playerHandler(keyPressed, player)
         basic_background(player)
 main()
