@@ -1,6 +1,8 @@
 import pygame
 import os
 
+pygame.init()
+
 width, height = (500, 900)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Rising Lava")
@@ -31,7 +33,7 @@ def basic_background(player):
     screen.blit(plr, (player.x, player.y))
     pygame.display.update()
 
-def playerHandler(keyPressed, player):
+def playerHandler(keyPressed, player, velocity):
     if keyPressed[pygame.K_a]:
         player.x -= velocity
     if keyPressed[pygame.K_d]:
@@ -43,7 +45,6 @@ def main():
     player = pygame.Rect(225, 580, 40, 80)
     clock = pygame.time.Clock()
     spacePressed = False
-    velocity = 5
     while True:
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -58,6 +59,7 @@ def main():
             if velocity < -jumpHeight:
                 spacePressed = False
                 velocity = jumpHeight
-        playerHandler(keyPressed, player)
+        playerHandler(keyPressed, player, velocity)
         basic_background(player)
-main()
+if __name__ == "__main__":
+    main()
