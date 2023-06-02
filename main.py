@@ -8,7 +8,7 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Rising Lava")
 
 FPS = 60
-velocity = 5
+velocity = 3
 gravity = 1
 jumpHeight = 20
 white = (255,255,255)
@@ -33,33 +33,32 @@ def basic_background(player):
     screen.blit(plr, (player.x, player.y))
     pygame.display.update()
 
-def playerHandler(keyPressed, player, velocity):
-    if keyPressed[pygame.K_a]:
-        player.x -= velocity
-    if keyPressed[pygame.K_d]:
-        player.x += velocity
+class player(pygame.sprite.Sprite):
+
+    def __init__(self, x, y, width, height):
+
+
+
+
+    def loop(keyPressed, player, velocity):
+        if keyPressed[pygame.K_a]:
+            player.x -= velocity
+        if keyPressed[pygame.K_d]:
+            player.x += velocity
     
 
 
 def main():
-    player = pygame.Rect(225, 580, 40, 80)
+    plr = player(225, 580, 40, 80)
     clock = pygame.time.Clock()
     spacePressed = False
+    global velocity
     while True:
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
         keyPressed = pygame.key.get_pressed()
-        if keyPressed[pygame.K_SPACE]:
-            spacePressed = True
-        if spacePressed:
-            player.y -= velocity
-            velocity -= gravity
-            if velocity < -jumpHeight:
-                spacePressed = False
-                velocity = jumpHeight
-        playerHandler(keyPressed, player, velocity)
         basic_background(player)
 if __name__ == "__main__":
     main()
