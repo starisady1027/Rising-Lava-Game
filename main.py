@@ -75,10 +75,10 @@ class player(pygame.sprite.Sprite):
     def move_right(self, velocity):
         self.x_vel = velocity
 
-    def loop(self, player, plr):
+    def loop(self, player, plr, offset_y):
         self.y_vel += min(1, (self.fall_count / FPS) * GRAVITY)
         self.move(self.x_vel, self.y_vel)
-        SCREEN.blit(plr, (player.rect.x, player.rect.y))
+        SCREEN.blit(plr, (player.rect.x - offset_y, player.rect.y - offset_y))
         self.fall_count += 1
 
     def landed(self):
@@ -112,12 +112,12 @@ def moveHandler(player, stone):
 
     collision(player, stone, player.y_vel)
 
-def Draw(player, stone):
+def Draw(player, stone, offset_y):
     basic_background()
     stone.draw()
     stone.drawNew()
     global plr_image_scaled
-    player.loop(player, plr_image_scaled)
+    player.loop(player, plr_image_scaled, offset_y)
     pygame.display.update()
 
 
@@ -126,6 +126,8 @@ def main():
     plr = player(START_PLR_X, START_PLR_Y, 40, 80)
     Stone = stone(START_STONE_X, START_STONE_Y, 150, 30)
     clock = pygame.time.Clock()
+    offset_y = 0
+    scroll_height = 200
 
     while True:
         clock.tick(FPS)
@@ -135,8 +137,11 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and plr.jump_count < 1:
                     plr.jump()
-        Draw(plr, Stone)
+        Draw(plr, Stone, offset_y)
         moveHandler(plr, Stone)
+
+        if ((plr.rect.top - offset_y >= HEIGHT - scroll_height) and plr.y_vel < 0):
+            offset_y -= plr.x_vel
 
 if __name__ == "__main__":
     main()
