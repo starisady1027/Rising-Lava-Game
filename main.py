@@ -143,7 +143,7 @@ def main():
         moveHandler(plr, Stone)
         print(offset_y)
         if ((plr.rect.top - offset_y <= scroll_height) and plr.y_vel < 0):
-            offset_y -= plr.y_vel
+            offset_y -= 0.1
 
 if __name__ == "__main__":
     main()
