@@ -42,10 +42,12 @@ class stone():
         self.rect = pygame.Rect(x, y, width, height)
         self.newRect = pygame.Rect(random.randint(100,240), random.randint(350,400), width, height)
 
-    def draw(self):
+    def draw(self, offset_y):
+        self.rect.y -= offset_y
         pygame.draw.rect(SCREEN, GRAY, self.rect)
     
-    def drawNew(self):
+    def drawNew(self, offset_y):
+        self.newRect.y -= offset_y
         pygame.draw.rect(SCREEN, GRAY, self.newRect)
 
 
@@ -78,7 +80,7 @@ class player(pygame.sprite.Sprite):
     def loop(self, player, plr, offset_y):
         self.y_vel += min(1, (self.fall_count / FPS) * GRAVITY)
         self.move(self.x_vel, self.y_vel)
-        SCREEN.blit(plr, (player.rect.x - offset_y, player.rect.y - offset_y))
+        SCREEN.blit(plr, (player.rect.x, player.rect.y + offset_y))
         self.fall_count += 1
 
     def landed(self):
@@ -114,8 +116,8 @@ def moveHandler(player, stone):
 
 def Draw(player, stone, offset_y):
     basic_background()
-    stone.draw()
-    stone.drawNew()
+    stone.draw(offset_y)
+    stone.drawNew(offset_y)
     global plr_image_scaled
     player.loop(player, plr_image_scaled, offset_y)
     pygame.display.update()
@@ -139,9 +141,9 @@ def main():
                     plr.jump()
         Draw(plr, Stone, offset_y)
         moveHandler(plr, Stone)
-
-        if ((plr.rect.top - offset_y >= HEIGHT - scroll_height) and plr.y_vel < 0):
-            offset_y -= plr.x_vel
+        print(offset_y)
+        if ((plr.rect.top - offset_y <= scroll_height) and plr.y_vel < 0):
+            offset_y -= plr.y_vel
 
 if __name__ == "__main__":
     main()
